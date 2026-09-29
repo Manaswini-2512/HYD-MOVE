@@ -2,7 +2,7 @@
 
 HYD-MOVE is an academic data analytics project for studying public transport demand and urban mobility in Hyderabad. It is intended to bring transport, traffic, weather, calendar, and location/time patterns into a reproducible analysis workflow.
 
-> **Data status:** Real Hyderabad mobility datasets have **not** been integrated. The only data file currently provided is a small, explicitly synthetic fixture for testing the data pipeline. No dashboard analytics or real-world findings are presented.
+> **Data status:** No real Hyderabad mobility datasets have been integrated. The repository contains a small synthetic CSV for existing pipeline tests; Phase 2A GTFS test content is generated only in temporary pytest storage. Neither is real transit or Hyderabad data, and no real-world findings are presented.
 
 ## Problem Statement
 
@@ -22,13 +22,40 @@ This project applies the data analytics syllabus to a practical urban mobility p
 
 ## Planned Analytics Pipeline
 
-1. Identify and document data sources, schemas, permissions, and provenance.
-2. Ingest source data while preserving immutable raw inputs.
-3. Assess missing values, duplicates, inconsistent values, noise, and outliers.
-4. Clean and preprocess validated copies; derive time, route, location, and other relevant features.
-5. Perform exploratory, statistical, correlation, and visual analysis.
-6. Fit and evaluate appropriate analytical models using reproducible splits and documented metrics.
+1. Identify and document intended data sources, schemas, permissions, and provenance.
+2. In a later controlled acquisition, retrieve approved source archives and preserve them as immutable raw inputs.
+3. Ingest GTFS ZIP tables, then validate required files, schemas, identifiers, coordinates, times, and relationships.
+4. Transform validated schedules into normalized transport tables and schedule-derived summaries.
+5. In later phases, combine suitable sources for exploratory, statistical, and visual analysis.
+6. Evaluate appropriate analytical models only after suitable data is acquired and prepared.
 7. Present validated results and limitations in the Streamlit dashboard.
+
+## Phase 2A: GTFS Ingestion and Transport Data Architecture
+
+Phase 2A establishes GTFS ZIP ingestion, structural validation, schedule-only transformations, provenance documentation, and a proposed normalized SQLite schema. It does not download feeds, create a database, or perform modelling or forecasting.
+
+The intended sources are TGSRTC and HMRL. Their feeds have not been downloaded or inspected. GTFS represents scheduled/static transit information and does **not** directly represent passenger demand.
+
+```text
+TGSRTC + HMRL
+			|
+			v
+		GTFS
+			|
+			v
+		 ETL
+			|
+			v
+	Validation
+			|
+			v
+Normalized transport tables
+			|
+			v
+	Analytics
+```
+
+See [DATA_SOURCES.md](docs/DATA_SOURCES.md), [GTFS_DATA_DICTIONARY.md](docs/GTFS_DATA_DICTIONARY.md), and [DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md) for planned source, field, and storage details.
 
 ## Planned Technology Stack
 
@@ -42,9 +69,9 @@ This project applies the data analytics syllabus to a practical urban mobility p
 
 ## Planned Datasets
 
-Potential sources, subject to availability, permissions, and documented provenance, include public transport ridership and service records, route and stop reference data, traffic observations, weather observations, and public holiday/calendar records. GPS- or sensor-derived data may be considered where access and privacy requirements allow. No external API has been connected and no real dataset has been downloaded or integrated in Phase 1.
+Potential future sources, subject to availability, permissions, and documented provenance, include TGSRTC and HMRL GTFS schedules, separate public transport ridership records, traffic observations, weather observations, and public holiday/calendar records. GPS- or sensor-derived data may be considered where access and privacy requirements allow. No external API has been connected and no real dataset has been downloaded or integrated.
 
-`data/raw/synthetic_traffic_sample.csv` is a tiny synthetic test fixture. Its locations and values are illustrative only and must not be treated as Hyderabad observations or used to support findings.
+`data/raw/synthetic_traffic_sample.csv` is a tiny synthetic test fixture. Its locations and values are illustrative only and must not be treated as Hyderabad observations or used to support findings. The synthetic GTFS ZIP is generated in pytest temporary storage only and is never a real-feed substitute.
 
 ## Expected Outputs
 
@@ -66,11 +93,11 @@ Potential sources, subject to availability, permissions, and documented provenan
 
 ## Development Phases
 
-1. **Foundation (current):** Repository structure, documented rules, synthetic pipeline fixture, minimal utilities, dashboard shell, and tests. No real data or trained models.
-2. **Data discovery and acquisition:** Select permitted data sources, document provenance and schemas, and define a data dictionary and validation rules before integration.
-3. **Data preparation and exploration:** Build reproducible ETL, data-quality reporting, feature preparation, exploratory analysis, and visualizations.
-4. **Modelling and evaluation:** Establish baselines, evaluate suitable regression/classification/clustering/forecasting approaches, and document assumptions and limitations.
-5. **Dashboard and reporting:** Present validated findings and model performance, then prepare academic reporting and reproducibility materials.
+1. **Phase 1, foundation (complete):** Repository structure, rules, basic utilities, dashboard shell, and tests. No real data or trained models.
+2. **Phase 2A, GTFS architecture (current):** ZIP ingestion, validation, schedule transformations, data dictionary, source provenance plan, and proposed database schema without acquiring feeds.
+3. **Phase 2B, controlled acquisition (next):** Review source terms, retrieve approved TGSRTC/HMRL GTFS files, record provenance/checksums/retrieval dates, and validate actual feed contents.
+4. **Data preparation and exploration:** Build reproducible ETL and exploratory analysis using documented real data.
+5. **Modelling, evaluation, dashboard, and reporting:** Proceed only after suitable data is available and quality-checked; document assumptions and limitations.
 
 ## Getting Started
 

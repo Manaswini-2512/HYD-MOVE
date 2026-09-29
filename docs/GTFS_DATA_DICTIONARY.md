@@ -1,0 +1,24 @@
+# GTFS Data Dictionary
+
+This dictionary describes common GTFS Schedule tables and selected columns for the planned TGSRTC and HMRL integrations. It is a planning reference, not a claim that either feed has been acquired or inspected. Feed-specific columns and optional files must be confirmed during controlled acquisition.
+
+GTFS identifiers are text even when their values look numeric. The ingestion layer preserves all fields as strings; the types below describe their logical values for downstream validation and storage.
+
+| File | Important columns | Meaning | Data type | Relationships | TGSRTC expectation | HMRL expectation |
+| --- | --- | --- | --- | --- | --- | --- |
+| `agency.txt` | `agency_id`, `agency_name`, `agency_url`, `agency_timezone` | Provider identity and time zone. `agency_id` may be omitted for a single-agency feed. | IDs/names/URL/time zone: text | Parent of `routes.agency_id`; single-agency association can be implicit. | GTFS core if feed conforms; verify | GTFS core if feed conforms; verify |
+| `routes.txt` | `route_id`, `agency_id`, `route_short_name`, `route_long_name`, `route_type` | Route identity, displayed name, and mode code. At least one route name is expected. | IDs/names: text; type: integer code | `agency_id` references agency when supplied; parent of trips. | GTFS core if feed conforms; verify | GTFS core if feed conforms; verify |
+| `trips.txt` | `trip_id`, `route_id`, `service_id`, `shape_id`, `trip_headsign`, `direction_id` | A scheduled trip or frequency-based trip template. | IDs/text; direction: integer/boolean-like code | References route and service; optional shape reference. | GTFS core if feed conforms; verify | GTFS core if feed conforms; verify |
+| `stops.txt` | `stop_id`, `stop_name`, `stop_lat`, `stop_lon`, `location_type`, `parent_station` | Stops, stations, and related passenger-access locations. | IDs/names: text; coordinates: decimal; type: integer code | Parent of stop times; optional parent station self-reference. | GTFS core if feed conforms; verify | GTFS core if feed conforms; verify |
+| `stop_times.txt` | `trip_id`, `arrival_time`, `departure_time`, `stop_id`, `stop_sequence`, `pickup_type`, `drop_off_type` | Ordered scheduled stop events within a trip. Times may exceed 24 hours for after-midnight service. | IDs/time: text; sequence/type codes: integer | References trips and stops; typical key is `(trip_id, stop_sequence)`. | GTFS core if feed conforms; verify | GTFS core if feed conforms; verify |
+| `calendar.txt` | `service_id`, weekday flags, `start_date`, `end_date` | Recurring weekly service over a date range. | IDs/dates: text; weekday flags: 0/1 integer | Defines service IDs referenced by trips; may be supplemented by exceptions. | `calendar.txt` or `calendar_dates.txt` expected; verify | `calendar.txt` or `calendar_dates.txt` expected; verify |
+| `calendar_dates.txt` | `service_id`, `date`, `exception_type` | Service added or removed on a particular date. | IDs/dates: text; exception: integer code | References service IDs; key is `(service_id, date)`. | Conditional/optional; verify | Conditional/optional; verify |
+| `shapes.txt` | `shape_id`, `shape_pt_lat`, `shape_pt_lon`, `shape_pt_sequence` | Ordered geographic points describing a vehicle path. | ID: text; coordinates: decimal; sequence: integer | Trips may reference a shape; shape ID repeats for its points. | Optional; verify | Optional; verify |
+| `fare_attributes.txt` | `fare_id`, `price`, `currency_type`, `payment_method`, `transfers` | Fare product attributes. | ID/currency: text; price: decimal; codes: integer | Parent of fare rules. | Optional; verify | Optional; verify |
+| `fare_rules.txt` | `fare_id`, `route_id`, `origin_id`, `destination_id`, `contains_id` | Conditions associating fare products with routes or zones. | IDs: text | References fare attributes and, when present, routes/zones. | Optional; verify | Optional; verify |
+| `frequencies.txt` | `trip_id`, `start_time`, `end_time`, `headway_secs`, `exact_times` | Service window and headway for frequency-based trips. | IDs/time: text; seconds/codes: integer | References a trip template. | Optional; verify | Optional; verify |
+| `feed_info.txt` | `feed_publisher_name`, `feed_publisher_url`, `feed_lang`, `feed_start_date`, `feed_end_date`, `feed_version` | Publisher and coverage metadata for a feed. | Text; dates: text | Describes the feed as a whole. | Optional; verify | Optional; verify |
+
+## Interpretation Limits
+
+GTFS describes scheduled/static transit service and its published locations, routes, and times. It does **not** directly contain actual passenger counts or observed boardings, alightings, crowding, or traffic. Schedule-derived trip and stop summaries are service descriptors only and must not be labelled as demand. Ridership analysis requires a separate, documented passenger-count source.
