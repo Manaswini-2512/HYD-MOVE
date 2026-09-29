@@ -189,6 +189,7 @@ def validate_gtfs_structure(feed: GTFSFeed) -> GTFSValidationReport:
     _validate_foreign_keys(feed, issues)
     _validate_stop_times(feed, issues)
     _validate_dates(feed, issues)
+    _validate_service_periods(feed, issues)
     _validate_coordinates(feed, issues)
     return GTFSValidationReport(tuple(issues))
 
@@ -345,6 +346,27 @@ def _validate_dates(feed: GTFSFeed, issues: list[GTFSValidationIssue]) -> None:
                 table_name,
                 f"{malformed_count} malformed {column} value(s); expected YYYYMMDD.",
             )
+
+
+def _validate_service_periods(
+    feed: GTFSFeed, issues: list[GTFSValidationIssue]
+) -> None:
+    table = feed.tables.get("calendar")
+    if table is None or not {"start_date", "end_date"}.issubset(table.columns):
+        return
+    starts = pd.to_datetime(table["start_date"], format="%Y%m%d", errors="coerce")
+    ends = pd.to_datetime(table["end_date"], format="%Y%m%d", errors="coerce")
+    comparable = starts.notna() & ends.notna()
+    invalid = comparable & starts.gt(ends)
+    invalid_count = int(invalid.sum())
+    if invalid_count:
+        _append_issue(
+            issues,
+            "error",
+            "invalid_service_period",
+            "calendar",
+            f"{invalid_count} service period(s) have start_date after end_date.",
+        )
 
 
 def _validate_coordinates(feed: GTFSFeed, issues: list[GTFSValidationIssue]) -> None:

@@ -4,42 +4,45 @@
 
 Public transport demand and urban congestion vary over time and location and may relate to routes, service conditions, weather, and calendar effects. HYD-MOVE will provide a reproducible data analytics workflow for investigating those relationships in Hyderabad once appropriate, documented data sources are selected.
 
-No real Hyderabad mobility data has been integrated. The CSV in `data/raw/` is an explicitly synthetic fixture for existing pipeline tests; the GTFS test archive is generated in pytest temporary storage. Neither is evidence about Hyderabad.
+Official TGSRTC and HMRL static GTFS feeds have been manually acquired and are preserved separately in `data/external/`. The CSV in `data/raw/` is an explicitly synthetic fixture for existing pipeline tests; the GTFS test archive is generated in pytest temporary storage. GTFS is schedule/network information, not observed passenger demand.
 
 ## System Architecture
 
 ```text
-Planned TGSRTC + HMRL sources
-          |
-          v
-GTFS ZIP --> src/data/ingestion.py
-          |
-          v
-src/data/gtfs_validation.py
-          |
-          v
-src/data/gtfs_transform.py
-          |
-          v
-normalized transport tables
-          |
-          v
-future analytics / database
-                                      |
-                                      v
-                              dashboard/app.py
+TGSRTC ZIP                         HMRL ZIP
+  |                                 |
+  v                                 v
+GTFS ingestion                  GTFS ingestion
+  |                                 |
+  v                                 v
+Independent validation          Independent validation
+  |                                 |
+  v                                 v
+Schedule summaries              Schedule summaries
+  |                                 |
+  +----------> Phase 2C feed-scoped normalized tables
+                |
+                v
+          Future analytics / database
+                |
+                v
+            dashboard/app.py
 ```
 
-Phase 2A implements local GTFS ZIP ingestion, validation, and schedule-derived summaries. Feeds are not downloaded, extracted to disk, or written to a production database. GTFS is static/scheduled service data and does not contain observed passenger demand. The dashboard remains a status page and does not display analytics results.
+Phase 2A implemented local GTFS ZIP ingestion, validation, and schedule-derived summaries. In Phase 2B the official source archives were manually obtained, checksummed, and validated separately. They remain unchanged and unextracted. No production database has been created. GTFS is static/scheduled service data and does not contain observed passenger demand. The dashboard remains a status page and does not display analytics results.
 
 ## Data Flow
 
-1. Document planned source pages, permissions, expected schemas, and retrieval metadata.
-2. After an approved controlled acquisition, preserve source GTFS ZIP archives unchanged in `data/raw/`.
-3. Read available TXT members directly from ZIP files and report required/optional files.
-4. Validate table schemas, identifiers, foreign keys, dates/times, coordinates, and empty tables.
-5. Produce schedule-derived route, stop, trip, service-frequency, and route-stop summaries.
-6. Later, load validated data into a normalized database and conduct analytics only with appropriate data.
+1. Preserve the two manually acquired official GTFS ZIPs unchanged under separate `data/external/` directories.
+2. Record source, available retrieval metadata, file size, SHA-256, service period, terms, and attribution in the manifest/provenance document.
+3. Read available TXT members directly from each ZIP and report required/optional files.
+4. Validate table schemas, identifiers, foreign keys, dates/times, coordinates, and empty tables independently.
+5. Produce schedule-derived summaries only; these are not demand measures.
+6. In Phase 2C, normalize into feed-scoped canonical tables, derive scheduled route/stop service summaries, run quality checks, and write Parquet outputs without merging the two feed identities.
+
+## Phase 2D: Passenger Demand Data Discovery
+
+GTFS currently provides scheduled routes, stops, trips, calendars, stop times, and feed-scoped network relationships only. Passenger demand requires separate observed data; no passenger-demand dataset is integrated and no passenger values have been inferred. Phase 2D assesses possible official, government, and research sources, including their access paths, licenses, data definitions, and unresolved limitations. See [DEMAND_DATA_SOURCE_ASSESSMENT.md](DEMAND_DATA_SOURCE_ASSESSMENT.md) and [demand_sources.json](../data/external/demand_sources.json). No data has been downloaded for this assessment.
 
 ## Planned Modules
 
@@ -67,7 +70,10 @@ Phase 2A implements local GTFS ZIP ingestion, validation, and schedule-derived s
 ## Future Development Phases
 
 1. **Phase 1, foundation (complete):** Repository, minimal utilities, status dashboard, and data-pipeline tests.
-2. **Phase 2A, GTFS architecture (current):** ZIP ingestion, validation, schedule transforms, provenance plan, data dictionary, and normalized database proposal. No feed acquisition.
-3. **Phase 2B, controlled acquisition (next):** Review terms, retrieve approved TGSRTC/HMRL feeds, record checksums and retrieval dates, and validate actual contents.
-4. **ETL and exploratory analysis:** Implement repeatable preparation, quality reporting, features, statistics, and visualization using suitable acquired data.
-5. **Modelling, dashboard, and academic reporting:** Evaluate justified methods and publish only validated results and limitations.
+2. **Phase 2A, GTFS architecture (complete):** ZIP ingestion, validation, schedule transforms, data dictionary, and normalized database proposal.
+3. **Phase 2B, acquisition and validation (complete):** Official TGSRTC/HMRL ZIPs preserved, checksummed, and independently inspected.
+4. **Phase 2C, ETL and unified mobility layer (complete):** Feed-aware normalized Parquet tables, schedule summaries, quality accounting, and lineage are generated. The feeds remain traceable separately; schedules do not represent passenger demand.
+5. **Phase 2D, passenger-demand source assessment (current):** Evaluate candidate direct observations/proxies, access paths, licensing, and unknowns. No demand data is integrated and no values are inferred.
+6. **Phase 2E, controlled acquisition (next):** Acquire approved passenger observations only after data definitions, permissions, provenance, and privacy requirements are confirmed.
+7. **Exploratory analysis and modelling:** Proceed only after suitable observations are available and quality-checked.
+8. **Dashboard and academic reporting:** Present validated findings and limitations.

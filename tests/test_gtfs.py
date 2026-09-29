@@ -169,6 +169,26 @@ def test_malformed_times_and_dates_are_detected(synthetic_gtfs_zip: Path) -> Non
     assert any(issue.code == "malformed_date" for issue in report.errors)
 
 
+def test_invalid_service_period_is_detected(synthetic_gtfs_zip: Path) -> None:
+    """A calendar range cannot end before it starts."""
+    feed = load_gtfs_zip(synthetic_gtfs_zip)
+    feed.tables["calendar"].loc[0, "end_date"] = "20251231"
+
+    report = validate_gtfs_structure(feed)
+
+    assert any(issue.code == "invalid_service_period" for issue in report.errors)
+
+
+def test_extended_gtfs_times_are_valid(synthetic_gtfs_zip: Path) -> None:
+    """After-midnight GTFS times with hours above 23 remain valid."""
+    feed = load_gtfs_zip(synthetic_gtfs_zip)
+    feed.tables["stop_times"].loc[0, "arrival_time"] = "25:30:00"
+
+    report = validate_gtfs_structure(feed)
+
+    assert not any(issue.code == "malformed_time" for issue in report.errors)
+
+
 def test_invalid_foreign_keys_are_detected(synthetic_gtfs_zip: Path) -> None:
     """Trip references must resolve to an existing route and service."""
     feed = load_gtfs_zip(synthetic_gtfs_zip)

@@ -8,3 +8,4 @@ seaborn
 plotly
 streamlit
 pytest
+pyarrow

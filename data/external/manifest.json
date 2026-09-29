@@ -1,0 +1,30 @@
+{
+  "datasets": [
+    {
+      "dataset": "TGSRTC",
+      "producer": "Telangana State Road Transport Corporation",
+      "source_url": "https://tgsrtc.telangana.gov.in/open-data",
+      "source_type": "Official",
+      "acquisition_method": "Manually obtained through the official data-request mechanism, as reported by the project owner",
+      "filename": "TGSRTC_GTFS.zip",
+      "retrieved_at": "Not determined from available source material.",
+      "size_bytes": 37364557,
+      "sha256": "74f343762f6900a6e23ecacb08beeb13df00bcc25e0859d93867ca02d8a7500a",
+      "service_start": "2026-09-01",
+      "service_end": "2031-09-01"
+    },
+    {
+      "dataset": "HMRL",
+      "producer": "Hyderabad Metro Rail",
+      "source_url": "https://hmrl.co.in/open-data/",
+      "source_type": "Official",
+      "acquisition_method": "Manually obtained through the official data-request mechanism, as reported by the project owner",
+      "filename": "HMRL_GTFS.zip",
+      "retrieved_at": "Not determined from available source material.",
+      "size_bytes": 2996166,
+      "sha256": "c35bda6768e71fdef742080d1436a5d751d7b2a64f6882839574d768a6498f2a",
+      "service_start": "2026-09-02",
+      "service_end": "2030-01-01"
+    }
+  ]
+}

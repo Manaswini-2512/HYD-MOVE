@@ -28,5 +28,10 @@ data/raw/*
 !data/raw/synthetic_traffic_sample.csv
 data/processed/*
 !data/processed/.gitkeep
+!data/processed/gtfs/
+data/processed/gtfs/*
+!data/processed/gtfs/LINEAGE.md
 data/external/*
 !data/external/.gitkeep
+!data/external/manifest.json
+!data/external/demand_sources.json
