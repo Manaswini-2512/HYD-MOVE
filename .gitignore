@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Test and tool caches
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Local environment and editor files
+.env
+.idea/
+.vscode/
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Keep only the documented synthetic fixture in raw data.
+data/raw/*
+!data/raw/README.md
+!data/raw/synthetic_traffic_sample.csv
+data/processed/*
+!data/processed/.gitkeep
+data/external/*
+!data/external/.gitkeep
