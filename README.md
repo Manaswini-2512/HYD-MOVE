@@ -103,8 +103,8 @@ Acquired static schedule feeds: TGSRTC and HMRL GTFS, recorded in the provenance
 2. **Phase 2A, GTFS architecture (complete):** ZIP ingestion, validation, schedule transformations, data dictionary, and database-schema proposal.
 3. **Phase 2B, real-feed acquisition and validation (complete):** Official TGSRTC/HMRL feeds manually acquired, checksummed, preserved, and validated separately.
 4. **Phase 2C, ETL and unified mobility layer (complete):** Feed-scoped canonical Parquet tables, schedule summaries, quality reporting, and lineage.
-5. **Phase 2D, passenger-demand data discovery (current):** Assess candidate sources, access routes, licensing, and limitations. No demand data is integrated and no passenger values are inferred.
-6. **Phase 2E, controlled acquisition (next):** Acquire only approved, defined, reusable passenger observations after source terms and provenance are confirmed.
+5. **Phase 2D, passenger-demand data discovery (complete):** Assess candidate sources, access routes, licensing, and limitations. No demand data was integrated and no passenger values were inferred.
+6. **Phase 2E, controlled acquisition (Outcome B; access review complete):** Official source checks found no approved machine-readable Hyderabad passenger dataset. Acquisition is blocked pending manual requests and written definitions/reuse terms; no forms were submitted and no data was acquired.
 7. **Exploratory analysis and modelling:** Begin only after appropriate observations are acquired and quality-checked.
 
 Phase 2C produces standardized schedules and network relationships only. Passenger demand is **not included**; trip, stop-time, route, and service counts must not be interpreted as ridership. See [UNIFIED_SCHEMA.md](docs/UNIFIED_SCHEMA.md) for field mappings and limitations.
@@ -124,6 +124,10 @@ TGSRTC and HMRL share canonical table schemas but remain traceable as separate f
 ## Phase 2D: Passenger Demand Data Discovery
 
 The existing GTFS layer represents scheduled service and network structure; passenger demand requires separate observations. Phase 2D evaluates official operator summaries, government open-data resources, manual-request candidates, and a research lead. It does not download or integrate demand data, create passenger values, or infer demand from trips, routes, stops, or stop times. See [DEMAND_DATA_SOURCE_ASSESSMENT.md](docs/DEMAND_DATA_SOURCE_ASSESSMENT.md) and [demand_sources.json](data/external/demand_sources.json).
+
+## Phase 2E: Controlled Acquisition Outcome
+
+The official L&T Metro Rail ridership page remains webpage-only, with an undefined metric, no located machine-readable download/API, and site terms warning against unauthorized copying. TGSRTC's passenger-volume statement is not a dated series, and its open-data terms cover static GTFS rather than ridership. Official catalog checks did not identify a reusable Hyderabad passenger dataset. No data was acquired; manual requests to TGSRTC and HMRL/L&T for documented, aggregate, privacy-safe observations and written reuse terms are required. See [DEMAND_DATA_PROVENANCE.md](docs/DEMAND_DATA_PROVENANCE.md) for checked sources, classifications, and request requirements. GTFS remains supply data and is not a demand proxy.
 
 ## Getting Started
 

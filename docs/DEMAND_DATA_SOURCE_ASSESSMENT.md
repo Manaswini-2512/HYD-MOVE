@@ -1,6 +1,6 @@
 # Passenger Demand Data Source Assessment
 
-**Research checked:** 2026-09-29. This is a discovery assessment only. No demand dataset was downloaded, integrated, copied into project data, or used to make passenger estimates. Findings below separate what a source explicitly publishes from claims, interpretation, and unknowns.
+**Initial assessment checked:** 2026-09-29. **Phase 2E source verification checked:** 2026-10-01. No demand dataset was downloaded, integrated, copied into project data, or used to make passenger estimates. Findings below separate what a source explicitly publishes from claims, interpretation, and unknowns.
 
 ## Definition
 
@@ -246,3 +246,41 @@ Ask HMDA to clarify the CTS-HMA link and whether it leads to a licensed dataset,
 - [Open Data Telangana Transportation catalog](https://data.telangana.gov.in/search?theme=Transportation), [RTA registrations record](https://data.telangana.gov.in/dataset/regional-transport-authority-vehicle-registrations-data), and [RTA registrations API record](https://data.telangana.gov.in/dataset/b54f1f1c-2128-4ad1-8f3c-db45ab1a0c8f/api)
 - [Government Open Data License - India](https://www.data.gov.in/Godl) and [Open Data Telangana policies](https://data.telangana.gov.in/policies)
 - [HMDA homepage](https://www.hmda.gov.in/) and [Zenodo Pakistan study false positive](https://zenodo.org/records/5524130)
+
+## Phase 2E Verification and Outcome
+
+**Checked:** 2026-10-01. Official operator pages and government catalogs were checked before any acquisition. No forms were submitted, no API credentials or access controls were bypassed, and no webpage values or datasets were downloaded. **Outcome B:** no legitimate, reusable machine-readable Hyderabad passenger-demand dataset was confirmed, so no raw demand artifact, normalized output, data dictionary, or demand-processing tests were created.
+
+### Source Access Classification
+
+Classifications describe the current access path. A public supply dataset or a vehicle proxy is not thereby a passenger-demand dataset.
+
+| Source | Classification | Phase 2E finding |
+| --- | --- | --- |
+| [L&T Metro Rail monthly ridership page](https://ltmetro.com/ridership/) | `WEBPAGE_ONLY` | The official operator page remains accessible and shows July 2024-June 2025 monthly network-level rows. The measure definition is absent; no official download/API was linked or found. The site says all content is protected and unauthorized copying/reproduction/use may result in legal action. Do not copy the values into HYD-MOVE without written permission and a documented definition. |
+| [TGSRTC Vision & Legacy](https://tgsrtc.telangana.gov.in/about-vision-legacy) | `WEBPAGE_ONLY` | Contains the approximate “around 90 lakhs passengers every day” statement in historical narrative. It has no dated observation period, method, supporting series, or disaggregation; it is not a time series. |
+| TGSRTC operational passenger aggregates | `MANUAL_REQUEST` | No daily/monthly series, route/depot ridership, boarding/alighting, or ticketing aggregate was found in the official open-data or RTI pages. The open-data terms describe static GTFS supply information, not passenger counts. A request through the agency/RTI route is required. |
+| HMRL/L&T machine-readable monthly or station-level observations | `MANUAL_REQUEST` | HMRL open data publishes static GTFS (schedules, routes, fares and stops), explicitly not payment or passenger personal data. The separate L&T webpage has an undefined monthly total but no machine-readable series. Request definitions, a reusable export, and written terms from the operator/data owner. |
+| [Telangana RTA Vehicle Registrations Data](https://data.telangana.gov.in/dataset/regional-transport-authority-vehicle-registrations-data) | `PUBLIC_DOWNLOAD` | The official catalog lists public monthly CSV resources, RTA-level scope, and Open Government License, India. This is vehicle registration/motorization context only, not transit passenger demand. It includes `Regn_No`, so privacy/data-minimization review is required; it was not acquired. |
+| HMDA “CTS - HMA” linked research lead | `MANUAL_REQUEST` | The HMDA homepage links to an external legacy host, but no dataset, custodian, methodology, secure current access, or reuse terms were confirmed. Ask HMDA to establish whether any dataset exists before considering access. |
+| [Open Data Telangana transportation catalog](https://data.telangana.gov.in/search?theme=Transportation) | `NOT_AVAILABLE` | The inspected transportation listings exposed GTFS supply feeds and vehicle/transport administration records, but no Hyderabad passenger-count dataset. This catalog search is not proof that no such data exists elsewhere. |
+| [Government of India OGD search](https://www.data.gov.in/search?title=Hyderabad%20Metro) | `NOT_AVAILABLE` | Title searches returned no verified Hyderabad transit demand dataset. Results included unrelated Delhi/Mumbai ridership and other metro records; those are not applicable to Hyderabad and were excluded. The OGD license applies to records carrying that license, not to unrelated operator webpage content. |
+| Existing TGSRTC/HMRL GTFS records | `MANUAL_REQUEST` | Their official download paths use operator forms, but the feeds contain scheduled service/supply data only. They were not refreshed or modified for Phase 2E and cannot supply passenger counts. |
+
+The status labels are an assessment of the official sources checked on the date above, not a guarantee that no other source exists. No official source located in this review documents a public TGSRTC daily/monthly passenger series or route/depot boarding, alighting, or ticketing aggregate.
+
+### Manual Request Boundary
+
+No request has been sent. The official [TGSRTC RTI page](https://tgsrtc.telangana.gov.in/rti-act) identifies its RTI information process; the [TGSRTC contact page](https://tgsrtc.telangana.gov.in/contact-us) provides general contact details. HMRL lists a Public Information Officer on its [RTI page](https://hmrl.co.in/right-to-information/); L&T provides its operator contact details at [ltmetro.com/contact-us](https://ltmetro.com/contact-us/). Contact should be initiated by a project owner manually.
+
+Request only already-aggregated, non-personal data, and ask the agency to document:
+
+- TGSRTC: whether daily/monthly total passengers or aggregated boardings/alightings exist; available time span; definition, unit and counting method; safe route/depot/region/network granularity; coverage gaps and revisions; schema/data dictionary; written reuse, attribution and redistribution terms.
+- HMRL/L&T: the machine-readable source for the displayed monthly series; definition (for example, the operator's exact meaning of “ridership”), unit and method; period and coverage; whether safe station/month aggregates exist; revisions; schema/data dictionary; written reuse, attribution and redistribution terms.
+- HMDA: whether the CTS-HMA link refers to an actual dataset; custodian, official secure access, study boundary and dates, variables/methodology, aggregation, privacy/consent conditions, and license.
+
+Request no names, phone numbers, email addresses, card/ticket identifiers, individual journeys, or trace-level records. Reject or quarantine any response containing such data; do not ingest it. Do not convert a published statement into observations or infer passenger demand from GTFS trip, stop, stop-time, route, or service counts.
+
+### Acquisition and Quality Status
+
+No eligible passenger dataset was acquired. Therefore there is no source filename/format, file size, SHA-256, row/column profile, data-type or missingness report, duplicate check, observed date range, geographic granularity, or value validation to report. No transformations were performed. The operator pages and catalog metadata were inspected only; no source artifacts were saved. `data/external/manifest.json` remains unchanged because it tracks acquired GTFS archives and no demand artifact exists. See [DEMAND_DATA_PROVENANCE.md](DEMAND_DATA_PROVENANCE.md) for the Phase 2E access-attempt record.

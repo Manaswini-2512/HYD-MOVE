@@ -1,4 +1,6 @@
 {
+  "research_checked": "2026-10-01",
+  "phase_2e_outcome": "No approved machine-readable passenger-demand dataset was confirmed or acquired. Manual agency requests are required; no forms were submitted.",
   "sources": [
     {
       "name": "Hyderabad Metro monthly ridership page",
@@ -13,6 +15,8 @@
       "official_url": "https://ltmetro.com/ridership/",
       "license": "Reuse terms not determined; operator website states site content is protected by applicable intellectual-property laws",
       "status": "Published summary located; underlying downloadable dataset not confirmed",
+      "access_classification": "WEBPAGE_ONLY",
+      "last_checked": "2026-10-01",
       "manual_action_required": true,
       "notes": "Latest visible month is June 2025. Ask the operator for the metric definition, full machine-readable series, revision policy, and reuse permission. Do not assume values represent station entries or boardings."
     },
@@ -29,6 +33,8 @@
       "official_url": "https://tgsrtc.telangana.gov.in/about-vision-legacy",
       "license": "Reuse terms for the statement not determined; GTFS-specific terms are not assumed to apply",
       "status": "Official page states around 90 lakh passengers per day, but reference period and methodology are unspecified",
+      "access_classification": "WEBPAGE_ONLY",
+      "last_checked": "2026-10-01",
       "manual_action_required": true,
       "notes": "Treat as an undated publisher statement, not as a measured daily series. Request dated, defined, anonymized source records before analytical use."
     },
@@ -45,6 +51,8 @@
       "official_url": "https://data.telangana.gov.in/dataset/regional-transport-authority-vehicle-registrations-data",
       "license": "Open Government License, India, as listed in catalog metadata; confirm current attribution/conditions before reuse",
       "status": "Public catalog record and variables confirmed; data files not downloaded or inspected",
+      "access_classification": "PUBLIC_DOWNLOAD",
+      "last_checked": "2026-10-01",
       "manual_action_required": false,
       "notes": "Published fields include Regn_No, Regn_VFDt, Regn_VTDt, Maker_Name, Model_Desc, BodyTyp, CC, Cylinder, Engine Fuel, HP, Seat_Capacity, Apprved_Dt, and OfficeCd. Regn_No requires privacy/data-minimization review; geography needs an RTA-office crosswalk."
     },
@@ -61,6 +69,8 @@
       "official_url": "https://tgsrtc.telangana.gov.in/rti-act",
       "license": "Not determined",
       "status": "Request candidate only; source fields and availability unknown",
+      "access_classification": "MANUAL_REQUEST",
+      "last_checked": "2026-10-01",
       "manual_action_required": true,
       "notes": "Request definitions, units, date coverage, route/depot/time aggregation, privacy treatment, update schedule, license, and attribution. Do not presume fields exist."
     },
@@ -77,6 +87,8 @@
       "official_url": "https://hmrl.co.in/open-data/",
       "license": "Not determined for passenger observations",
       "status": "Request candidate only; public monthly page exists but underlying dataset/owner is unconfirmed",
+      "access_classification": "MANUAL_REQUEST",
+      "last_checked": "2026-10-01",
       "manual_action_required": true,
       "notes": "Request the monthly series source, metric definition, station coverage, privacy-preserving aggregation, revisions, terms, and attribution."
     },
@@ -93,6 +105,8 @@
       "official_url": "https://www.hmda.gov.in/",
       "license": "Not determined",
       "status": "Unverified research lead, not a confirmed dataset",
+      "access_classification": "MANUAL_REQUEST",
+      "last_checked": "2026-10-01",
       "manual_action_required": true,
       "notes": "The HMDA homepage links to http://ctshma2011.finnaclle.com/index.php. Confirm custodian, secure access, dataset existence, methodology, period, variables, consent/privacy controls, and license before considering acquisition."
     },
@@ -109,6 +123,8 @@
       "official_url": "https://tgsrtc.telangana.gov.in/open-data",
       "license": "TGSRTC Open Data terms; attribution required",
       "status": "Already validated and integrated in the feed-scoped GTFS layer",
+      "access_classification": "MANUAL_REQUEST",
+      "last_checked": "2026-10-01",
       "manual_action_required": true,
       "notes": "Current project input. Trip and stop-time counts must not be interpreted as passengers."
     },
@@ -125,6 +141,8 @@
       "official_url": "https://hmrl.co.in/open-data/",
       "license": "HMRL Open Data terms; attribution required",
       "status": "Already validated and integrated in the feed-scoped GTFS layer",
+      "access_classification": "MANUAL_REQUEST",
+      "last_checked": "2026-10-01",
       "manual_action_required": true,
       "notes": "Current project input. Static GTFS excludes actual passenger-count observations."
     },
@@ -141,8 +159,28 @@
       "official_url": "https://data.telangana.gov.in/dataset/gtfs-mmts-hyderabad",
       "license": "Open Government License, India, as listed in catalog metadata; verify current terms",
       "status": "Catalog record found; catalog last updated 2023-02-15; not acquired",
+      "access_classification": "MANUAL_REQUEST",
+      "last_checked": "2026-10-01",
       "manual_action_required": true,
       "notes": "Potential later supply-network extension only; verify feed freshness and provenance before acquisition."
+    },
+    {
+      "name": "Government of India OGD search for Hyderabad/Telangana transit passenger data",
+      "publisher": "National Informatics Centre, Ministry of Electronics and Information Technology, Government of India; dataset publishers retain ownership of their records",
+      "mode": "Not applicable; catalog search only",
+      "geography": "Hyderabad/Telangana query; returned results were not a confirmed local passenger-demand dataset",
+      "coverage_start": null,
+      "coverage_end": null,
+      "granularity": "No applicable dataset identified",
+      "demand_type": "No confirmed Hyderabad/Telangana passenger-demand record found in the inspected results",
+      "access_method": "Public catalog search",
+      "official_url": "https://www.data.gov.in/search?title=Hyderabad%20Metro",
+      "license": "Government Open Data License, India applies to records carrying that license; no qualifying local record was acquired",
+      "status": "Search returned unrelated/non-local records; no verified Hyderabad transit demand dataset identified",
+      "access_classification": "NOT_AVAILABLE",
+      "last_checked": "2026-10-01",
+      "manual_action_required": false,
+      "notes": "Search results included Delhi/Mumbai metro or monorail ridership and unrelated records. Excluded because they do not represent Hyderabad passenger demand. Search results are not exhaustive proof that no other source exists."
     }
   ]
 }

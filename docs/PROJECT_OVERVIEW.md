@@ -73,7 +73,7 @@ GTFS currently provides scheduled routes, stops, trips, calendars, stop times, a
 2. **Phase 2A, GTFS architecture (complete):** ZIP ingestion, validation, schedule transforms, data dictionary, and normalized database proposal.
 3. **Phase 2B, acquisition and validation (complete):** Official TGSRTC/HMRL ZIPs preserved, checksummed, and independently inspected.
 4. **Phase 2C, ETL and unified mobility layer (complete):** Feed-aware normalized Parquet tables, schedule summaries, quality accounting, and lineage are generated. The feeds remain traceable separately; schedules do not represent passenger demand.
-5. **Phase 2D, passenger-demand source assessment (current):** Evaluate candidate direct observations/proxies, access paths, licensing, and unknowns. No demand data is integrated and no values are inferred.
-6. **Phase 2E, controlled acquisition (next):** Acquire approved passenger observations only after data definitions, permissions, provenance, and privacy requirements are confirmed.
+5. **Phase 2D, passenger-demand source assessment (complete):** Evaluate candidate direct observations/proxies, access paths, licensing, and unknowns. No demand data was integrated and no values were inferred.
+6. **Phase 2E, controlled acquisition (Outcome B; access review complete):** Official checks did not confirm a reusable machine-readable Hyderabad passenger-demand dataset. No data was acquired; controlled acquisition awaits manual operator responses, documented definitions, and written reuse/privacy terms. See [DEMAND_DATA_PROVENANCE.md](DEMAND_DATA_PROVENANCE.md).
 7. **Exploratory analysis and modelling:** Proceed only after suitable observations are available and quality-checked.
 8. **Dashboard and academic reporting:** Present validated findings and limitations.
